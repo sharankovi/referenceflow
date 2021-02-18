@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+	<flow name="referenceflowFlow" doc:id="2cc984b0-9ce9-41e7-80ee-fc98c1a3bd80" >
+		<http:listener doc:name="Listener" doc:id="d08a21b1-250b-4921-ad26-82a6c6d28462" config-ref="HTTP_Listener_config" path="/${http.path}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="79905d2e-a67f-4a55-b5ba-47c08c3f1350" message="FLOW STARTED" category="-----------------------------START FLOW---------------------------"/>
+		<set-variable value="Adhi" doc:name="Set Variable" doc:id="65b261b8-cb88-4b56-a5bf-b3a1cd093cde" variableName="mainvar"/>
+		<flow-ref doc:name="Flow Reference" doc:id="f7689e4a-3de6-489f-b880-a5ceae5d88f1" name="subflow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="bbf315c5-9833-49ad-ba85-76c386b838c9" message="#[payload]" category="=============END MAIN FLOW=============="/>
+		<logger level="INFO" doc:name="Logger" doc:id="31428a14-52ca-4756-b2e7-4fa510b9212f" message="#[vars.subvar]" category="*************************subveriable at main*****************"/>
+	</flow>
+	<sub-flow name="subflow" doc:id="791588fb-9dd0-441e-852c-4d4c25110694" >
+		<set-payload value='#[%dw 2.0
+output application/json
+---
+{
+	"name":"Adhi",
+	"lastname":"angadi"
+}]' doc:name="Set Payload" doc:id="cb22eea9-92d3-41c5-b51c-9850922db6f2" />
+		<set-variable value="akash" doc:name="Set Variable" doc:id="390acc02-4aff-4760-8839-f708ff4e3af4" variableName="subvar"/>
+		<logger level="INFO" doc:name="Logger" doc:id="54521aa3-7147-44bc-84ea-a7593ad0df8b" message="#[vars.mainvar]" category="=================MainVeriable at Sub calling function============"/>
+		<logger level="INFO" doc:name="Logger" doc:id="5bf77160-6233-4466-87e3-ada0574c1f52" message="FLOW END" category="**********************Flow End for subflow*************" />
+	</sub-flow>
+</mule>
